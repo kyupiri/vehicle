@@ -620,14 +620,20 @@ https://github.com/nodeca/pako/blob/main/LICENSE
     }
   }
 
-  function resetAll() {
-    if (!confirm("모든 기록을 삭제하고 초기화할까요?")) return;
-    state = { model: DEFAULT_MODEL, plate: "", records: [] };
-    persist();
-    document.getElementById("v_model").value = DEFAULT_MODEL;
-    document.getElementById("v_plate").value = "";
-    render();
+function resetAll() {
+  var pw = prompt("초기화를 진행하려면 비밀번호를 입력하세요.");
+  if (pw === null) return;
+  if (pw !== APP_PASSWORD) {
+    alert("비밀번호가 올바르지 않습니다. 초기화가 취소되었습니다.");
+    return;
   }
+  if (!confirm("모든 기록을 삭제하고 초기화할까요?")) return;
+  state = { model: DEFAULT_MODEL, plate: "", records: [] };
+  persist();
+  document.getElementById("v_model").value = DEFAULT_MODEL;
+  document.getElementById("v_plate").value = "";
+  render();
+}
 
   function render() {
     var list = state.records.slice().sort(function (a, b) { return a.date < b.date ? -1 : (a.date > b.date ? 1 : a.id - b.id); });
